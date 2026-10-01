@@ -13,11 +13,13 @@ jobs:
     name: Build WebGL
     runs-on: ubuntu-latest
     steps:
+      # 1. Traer el código del repositorio (incluyendo assets rastreados por Git LFS)
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           lfs: true
 
+      # 2. Reutilizar la caché de la carpeta Library para acelerar builds futuras
       - name: Cache Unity Library
         uses: actions/cache@v4
         with:
@@ -26,16 +28,18 @@ jobs:
           restore-keys: |
             Library-
 
-      # Compilación directa: game-ci gestiona el inicio de sesión con tus Secrets
+      # 3. Compilar el proyecto a WebGL usando el archivo .ulf cargado
       - name: Build WebGL Project
         uses: game-ci/unity-builder@v4
         env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: WebGL
           unityVersion: 6000.0.25f1
 
+      # 4. Publicar la build compilada directamente en la rama gh-pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
