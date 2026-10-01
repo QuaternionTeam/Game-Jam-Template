@@ -1,0 +1,49 @@
+name: Build and Deploy WebGL to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build WebGL
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Unity Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      # PASO DE LICENCIA AUTOMÁTICO
+      - name: Request Unity License
+        uses: game-ci/unity-request-activation-token@v1
+        id: step-license
+        with:
+          email: ${{ secrets.UNITY_EMAIL }}
+          password: ${{ secrets.UNITY_PASSWORD }}
+
+      - name: Build WebGL Project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ steps.step-license.outputs.token }}
+        with:
+          targetPlatform: WebGL
+          unityVersion: 6000.0.25f1
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/WebGL/WebGL
