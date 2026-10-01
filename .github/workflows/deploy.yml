@@ -26,18 +26,12 @@ jobs:
           restore-keys: |
             Library-
 
-      # PASO DE LICENCIA AUTOMÁTICO
-      - name: Request Unity License
-        uses: game-ci/unity-request-activation-token@v1
-        id: step-license
-        with:
-          email: ${{ secrets.UNITY_EMAIL }}
-          password: ${{ secrets.UNITY_PASSWORD }}
-
+      # Compilación directa: game-ci gestiona el inicio de sesión con tus Secrets
       - name: Build WebGL Project
         uses: game-ci/unity-builder@v4
         env:
-          UNITY_LICENSE: ${{ steps.step-license.outputs.token }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: WebGL
           unityVersion: 6000.0.25f1
