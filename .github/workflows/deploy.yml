@@ -13,25 +13,29 @@ jobs:
     name: Build WebGL
     runs-on: ubuntu-latest
     steps:
-      # 1. Liberar espacio en disco en el runner de GitHub
-      - name: Maximize Build Space
-        uses: easimon/maximize-build-space@v10
-        with:
-          root-reserve-mb: 8192
-          temp-reserve-mb: 4096
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
+      # 1. Liberar espacio masivo en el disco del runner (borra ~45 GB de paquetes innecesarios)
+      - name: Free Disk Space (Ubuntu Runner)
+        run: |
+          echo "=== Espacio previo ==="
+          df -h
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /usr/local/share/chromium
+          sudo rm -rf /usr/local/lib/node_modules
+          sudo docker image prune --all --force
+          echo "=== Espacio tras limpieza ==="
+          df -h
 
-      # 2. Descargar el código del repositorio (con LFS)
+      # 2. Descargar el repositorio (con Git LFS)
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           lfs: true
 
-      # 3. Cachear la carpeta Library para acelerar re-builds
+      # 3. Cachear la carpeta Library de Unity
       - name: Cache Unity Library
         uses: actions/cache@v4
         with:
@@ -40,7 +44,7 @@ jobs:
           restore-keys: |
             Library-
 
-      # 4. Compilar a WebGL
+      # 4. Compilar proyecto a WebGL con GameCI
       - name: Build WebGL Project
         uses: game-ci/unity-builder@v4
         env:
@@ -51,7 +55,7 @@ jobs:
           targetPlatform: WebGL
           unityVersion: 6000.0.25f1
 
-      # 5. Publicar en GitHub Pages
+      # 5. Desplegar en GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
