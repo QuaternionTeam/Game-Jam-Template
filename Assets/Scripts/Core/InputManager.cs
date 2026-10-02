@@ -21,11 +21,10 @@ internal class InputManager : MonoBehaviour
 
     Instance = this;
     transform.parent = null;
+    DontDestroyOnLoad(gameObject);
 
     _playerInput = GetComponent<PlayerInput>();
     _playerInput.actions.Disable();
-
-    DontDestroyOnLoad(gameObject);
   }
 
   internal void SwitchMap(string mapName)

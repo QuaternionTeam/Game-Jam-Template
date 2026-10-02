@@ -26,16 +26,19 @@ internal class AudioManager : MonoBehaviour
 
   private void Awake()
   {
-    if (Instance == null)
+    if (Instance != null)
     {
-      Instance = this;
-      DontDestroyOnLoad(gameObject);
-
-      InitializeAudioPool();
-      InitializeAudioSources();
-    }
-    else
       Destroy(gameObject);
+      return;
+
+    }
+
+    Instance = this;
+    transform.parent = null;
+    DontDestroyOnLoad(gameObject);
+
+    InitializeAudioPool();
+    InitializeAudioSources();
   }
 
   private void OnEnable()

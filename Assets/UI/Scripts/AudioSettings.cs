@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AudioOptions : MonoBehaviour
+public class AudioSettings : MonoBehaviour
 {
   [Header("Sliders de Volumen")]
   [SerializeField] private Slider masterSlider;
@@ -28,10 +28,18 @@ public class AudioOptions : MonoBehaviour
     float sfxVol = PlayerPrefs.GetFloat(SFX_KEY, 1f);
     float uiVol = PlayerPrefs.GetFloat(UI_KEY, 1f);
 
-    if (masterSlider) { masterSlider.value = masterVol; masterSlider.onValueChanged.AddListener(SetMasterVolume); }
-    if (musicSlider)  { musicSlider.value = musicVol;   musicSlider.onValueChanged.AddListener(SetMusicVolume); }
-    if (sfxSlider)    { sfxSlider.value = sfxVol;     sfxSlider.onValueChanged.AddListener(SetSFXVolume); }
-    if (uiSlider)     { uiSlider.value = uiVol;       uiSlider.onValueChanged.AddListener(SetUIVolume); }
+    /* Vincular sliders y setear volúmenes */
+    masterSlider.value = masterVol;
+    masterSlider.onValueChanged.AddListener(SetMasterVolume);
+
+    musicSlider.value = musicVol;
+    musicSlider.onValueChanged.AddListener(SetMusicVolume);
+
+    sfxSlider.value = sfxVol;
+    sfxSlider.onValueChanged.AddListener(SetSFXVolume);
+
+    uiSlider.value = uiVol;
+    uiSlider.onValueChanged.AddListener(SetUIVolume);
 
     SetMasterVolume(masterVol);
     SetMusicVolume(musicVol);
