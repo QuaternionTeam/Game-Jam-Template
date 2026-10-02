@@ -11,12 +11,12 @@ public class UIButtonAudio : MonoBehaviour, IPointerEnterHandler, IPointerClickH
   public void OnPointerEnter(PointerEventData eventData)
   {
     if (!string.IsNullOrEmpty(hoverSoundName))
-      GameEvents.TriggerPlaySound(hoverSoundName);
+      GameEvents.RequestPlaySound(hoverSoundName);
   }
 
   public void OnPointerClick(PointerEventData eventData)
   {
     if (!string.IsNullOrEmpty(clickSoundName))
-      GameEvents.TriggerPlaySound(clickSoundName);
+      GameEvents.RequestPlaySound(clickSoundName);
   }
 }

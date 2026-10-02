@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class GameOverState : GameState
+public class VictoryState : GameState
 {
   public override void OnEnter()
   {
     Time.timeScale = 0f;
     InputManager.Instance.SwitchMap("UI");
 
-    GameEvents.TriggerGameOver();
+    GameEvents.TriggerVictory();
   }
 
   public override void OnExit()

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3986908281147595444}
   m_Layer: 0
   m_Name: Character2D
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,7 +133,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f0ee996d4a2d6ee4d929d547115f96e7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController2D
   moveSpeed: 5
-  jumpForce: 6
+  jumpForce: 7
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
   coyoteTime: 0.15

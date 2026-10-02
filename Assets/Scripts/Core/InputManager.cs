@@ -10,6 +10,8 @@ internal class InputManager : MonoBehaviour
 
   internal Vector2 MoveInput { get; private set; }
   internal static event Action OnJumpPressed;
+  internal static event Action OnPausePressed;
+
 
   internal void Awake()
   {
@@ -22,9 +24,10 @@ internal class InputManager : MonoBehaviour
     Instance = this;
     transform.parent = null;
     DontDestroyOnLoad(gameObject);
-
+    
     _playerInput = GetComponent<PlayerInput>();
     _playerInput.actions.Disable();
+
   }
 
   internal void SwitchMap(string mapName)
@@ -46,4 +49,10 @@ internal class InputManager : MonoBehaviour
     if (value.isPressed)
       OnJumpPressed?.Invoke();
   }
+
+  internal void OnPause(InputValue value)
+    {
+      if (value.isPressed)
+        OnPausePressed?.Invoke();
+    }
 }

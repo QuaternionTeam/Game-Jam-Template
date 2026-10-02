@@ -7,14 +7,16 @@ public class GameplayState : GameState
     Time.timeScale = 1f;
     InputManager.Instance.SwitchMap("Player");
 
-    /* Suscripciones */
-    GameEvents.OnPauseRequested += PauseGame;
+    InputManager.OnPausePressed += PauseGame;
+    GameEvents.OnVictoryRequested += Victory;
+    GameEvents.OnGameOverRequested += GameOver;
   }
 
   public override void OnExit()
   {
-    /* Desuscripciones */
-    GameEvents.OnPauseRequested -= PauseGame;
+    InputManager.OnPausePressed -= PauseGame;
+    GameEvents.OnVictoryRequested -= Victory;
+    GameEvents.OnGameOverRequested -= GameOver;
   }
 
   public override void Update(float deltaTime) { }
@@ -22,5 +24,15 @@ public class GameplayState : GameState
   private void PauseGame()
   {
     Transition<PauseState>();
+  }
+
+  private void Victory()
+  {
+    Transition<VictoryState>();
+  }
+
+  private void GameOver()
+  {
+    Transition<GameOverState>();
   }
 }
