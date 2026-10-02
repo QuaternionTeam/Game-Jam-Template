@@ -13,13 +13,25 @@ jobs:
     name: Build WebGL
     runs-on: ubuntu-latest
     steps:
-      # 1. Traer el código del repositorio (incluyendo assets rastreados por Git LFS)
+      # 1. Liberar espacio en disco en el runner de GitHub
+      - name: Maximize Build Space
+        uses: easimon/maximize-build-space@v10
+        with:
+          root-reserve-mb: 8192
+          temp-reserve-mb: 4096
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+
+      # 2. Descargar el código del repositorio (con LFS)
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           lfs: true
 
-      # 2. Reutilizar la caché de la carpeta Library para acelerar builds futuras
+      # 3. Cachear la carpeta Library para acelerar re-builds
       - name: Cache Unity Library
         uses: actions/cache@v4
         with:
@@ -28,7 +40,7 @@ jobs:
           restore-keys: |
             Library-
 
-      # 3. Compilar el proyecto a WebGL usando el archivo .ulf cargado
+      # 4. Compilar a WebGL
       - name: Build WebGL Project
         uses: game-ci/unity-builder@v4
         env:
@@ -39,7 +51,7 @@ jobs:
           targetPlatform: WebGL
           unityVersion: 6000.0.25f1
 
-      # 4. Publicar la build compilada directamente en la rama gh-pages
+      # 5. Publicar en GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
