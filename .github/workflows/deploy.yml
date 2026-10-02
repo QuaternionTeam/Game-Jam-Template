@@ -53,7 +53,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: WebGL
-          unityVersion: 6000.0.25f1
+          unityVersion: 6000.3.25f1
 
       # 5. Desplegar en GitHub Pages
       - name: Deploy to GitHub Pages
